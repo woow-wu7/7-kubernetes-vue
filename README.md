@@ -1,10 +1,10 @@
 # Kubernetes 部署 Vue 项目
 
-[[部署 01] Nginx](https://juejin.im/post/6844904095464030215)
-[[部署 02] Docker 部署 vue 项目](https://juejin.im/post/6844904099024994312)
-[[部署 03] gitlab-CI](https://juejin.im/post/6844904103944912904)
-[[部署 04] [复习] gitlabCI + docker-compose + ssh 免密登录 + 最全 Dockerfile](https://juejin.cn/post/7066315404561350670)
-[[部署 05] Kubernetes01](https://juejin.cn/post/7083047157413969928)
+[[部署 01] Nginx](https://juejin.im/post/6844904095464030215)  
+[[部署 02] Docker 部署 vue 项目](https://juejin.im/post/6844904099024994312)  
+[[部署 03] gitlab-CI](https://juejin.im/post/6844904103944912904)  
+[[部署 04] [复习] gitlabCI + docker-compose + ssh 免密登录 + 最全 Dockerfile](https://juejin.cn/post/7066315404561350670)  
+[[部署 05] Kubernetes01](https://juejin.cn/post/7083047157413969928)  
 [[部署 06] Kubernetes02](https://juejin.cn/post/7123855003697020958)
 
 ### (1) 新建 Dockerfile
