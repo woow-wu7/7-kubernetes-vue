@@ -17,7 +17,9 @@ WORKDIR ${WORK_DIR}
 ### - 语法：COPY 源路径 目标路径
 ### - 语法：COPY 宿主机Dockerfile所在的文件夹 容器中的文件夹
 ### - 语法：COPY --from=as名称  -------- 主要用来拷贝中间镜像次层的数据，主要用于多阶段构建
-### - 注意区分 COPY 和 ADD 的区别
+### - 注意：
+###   - 区分 COPY 和 ADD 的区别
+###   - 这里是直接把项目拷贝到了宿主机上，除了这样也可以 git clone xxxx 一样的
 COPY . ${WORK_DIR}
 
 ### RUN
