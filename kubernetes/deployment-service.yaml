@@ -17,26 +17,35 @@ spec:
       namespace: xia
       labels:
         run: xia-nginx # ------------------ [ pod中的label和deployment一一对应 ]
-      spec:
-        containers:
-          - name: xia-nginx-container
-            image: nginx
-            imagePullPolicy: IfNotPresent # - 镜像拉取策略，IfNotPresent Never Always
-            ports:
-              - containerPort: 80
-            volumeMounts: # ====================== 将 share-empty-volume 挂载到 nginx 容器的 /var/log/nginx 目录中
-              - name: share-empty-volume
-                mountPath: /var/log/nginx
-          - name: xia-busybox-container
-            image: busybox
-            imagePllPolicy: Always
-            command: ["/bin/sh", "-c", "tail -f /los/access.log"] # -- 该命令会动态的读取指定文件夹中的内容
-            volumeMounts: # ====================== 将 share-empty-volume 挂载到 busybox 容器的 /logs 目录中
-              - name: share-empty-volume
-                mountPath: /logs
-        volumes: # =============================== 声明 volume，name是share-empty-volume，类型是 emptyDir
-          - name: share-empty-volume # =========== 这里 nginx 和 busybox 具有相同的 volume，共享这个volume，访问nginx，busybox则会输出nginx的日志内容在控制台
-            emptyDir: {}
+    spec:
+      containers:
+        - name: xia-nginx-container
+          image: nginx
+          imagePullPolicy: IfNotPresent # - 镜像拉取策略，IfNotPresent Never Always
+          ports:
+            - containerPort: 80
+          volumeMounts: # ====================== 将 share-empty-volume 挂载到 nginx 容器的 /var/log/nginx 目录中
+            - name: share-volume-build
+              mountPath: /usr/share/nginx/html
+            - name: share-volume-conf
+              mountPath: /etc/nginx/conf.d
+        # - name: xia-busybox-container
+        #   image: busybox
+        #   imagePllPolicy: Always
+        #   command: ["/bin/sh", "-c", "tail -f /los/access.log"] # -- 该命令会动态的读取指定文件夹中的内容
+        #   volumeMounts: # ====================== 将 share-empty-volume 挂载到 busybox 容器的 /logs 目录中
+        #     - name: share-empty-volume
+        #       mountPath: /logs
+      volumes: # =============================== 声明 volume，name是share-empty-volume，类型是 emptyDir
+        - name: share-volume-build # **************** 挂载vue打包后的文件
+          # emptyDir: {} # ===================== emptyDir类型的 volume
+          hostPath: # ========================== hostPath类型的 volume
+            path: /root/xia/build # === Node宿主机的真实目录
+            type: DirectoryOrCreate # ========== 表示目录存在就使用，不存在就先创建后使用
+        - name: share-volume-conf # ***************** 挂载 nginx 配置
+          hostPath:
+            path: /root/xia/conf
+            type: DirectoryOrCreate
 
 ---
 apiVersion: v1
