@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1 # --------------------- 创建该对象所使用的 Kubernetes API 的版本
+kind: Deployment # ------------------------ 对象类别：deployment
+metadata:
+  name: xia-nginx-deployment # ------------ deployment名字
+  namespace: xia # ------------------------ 所属命令空间
+  labels: # ------------------------------- 标签，( 注意区分 labels 和 namespace 的区别 )
+    run: xia-nginx
+spec:
+  replicas: 3 # ---------------------------- pod副本数
+  selector: # ----------------------------- pod选择器
+    matchLabels:
+      run: xia-nginx # -------------------- [ pod中的label和deployment一一对应 ] deployment所属标签，和template中的pod的标签对应表示匹配
+  template: # ----------------------------- 定义 pod 模版
+    metadata:
+      name: xia-nginx-pod
+      namespace: xia
+      labels:
+        run: xia-nginx # ------------------ [ pod中的label和deployment一一对应 ]
+      spec:
+        containers:
+          - name: xia-nginx-container
+            image: nginx
+            imagePullPolicy: IfNotPresent # - 镜像拉取策略，IfNotPresent Never Alwarys
+            ports:
+              - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xia-nginx-service
+  namespace: xia
+  labels:
+    run: xia-nginx
+spec:
+  type: NodePort # NodePort 类型可以被外网访问
+  selector:
+    run: nginx
+  ports:
+    - port: 77
+      targetPort: 80
